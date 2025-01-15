@@ -4,7 +4,7 @@ This repository was created to accompany the paper "Diversifying Global Biodiver
 This paper explores the diversity of MPA (Marine Protected Area) target implementations and predicts their catch benefits given different MPA designs and fishing pressure reductions.
 
 ## Initial Setups
-A. Check all defined parameters in [`spparams_v3`](mains/spparams_v3.m). 
+A. Check all defined parameters in [`spparams_v3`](mains/spparams_v3.m).\n
     a. The parameters are set for four reef fish species: 
         1. Parrotfish (*Scarus* spp.) 
         2. Snapper (*Lutjanus* spp.) 
