@@ -11,6 +11,7 @@ A. Check all defined parameters in [`spparams_v3`](mains/spparams_v3.m).
         3. Coral trout (*Plectropomus* spp.) 
         4. Rabbitfish (*Siganus* spp.) 
     2. Beverton-Holt's recruitment parameters α and β are parameterized in this file. 
+
 B. Parameterize EOpt (Optimum Fishing Mortality Rate) that generates COpt (Maximum catch) for each species by running [`SetInits_AgeStructMod_v5`](mains/SetInits_AgeStructMod_v5.m). 
     1. This parameterization file is run to get the parameters EOpt, which translates to 1×F<sub>msy</sub> (sustainable fishing pressure).
     2. It will be multiplied by 1.5 and 2.0 to define moderate overfishing and high overfishing, respectively.
