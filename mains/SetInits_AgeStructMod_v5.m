@@ -14,14 +14,16 @@ addpath(genpath('../functions')) % add path to functions
 run ('spparams_v3.m')  %run and generate initial parameters
 flenm = char('Params_v3');  %set file name to save parameters generated on this code
 
-%% Check length-weight relatiionship of each species
+%% Check length-weight relationship of each species
 figure("Name", "Length-weight relationship")
+fish = {'Parrotfish','Snapper', 'Coral trout', 'Rabbit fish'};
 for ispp = 1:nspp
-   subplot(1,nspp,ispp); 
-   plot(1:spparams.nages(ispp), spparams.weights{1,ispp}, 'k')
-   xlabel('age'); ylabel('weight(g)')
+    subplot(1,nspp,ispp); 
+    plot(1:spparams.nages(ispp), spparams.weights{1,ispp}, 'k')
+    xlabel('age (year)'); ylabel('weight(g)')
+    title(fish{ispp})
 end
-
+saveas(gcf, '../figures/Length-weight relationship.png')
 %% Initial parameters
 Ninit = spparams.Rmax; % intial abundance based on pre-set up maximum recruitment
 Ainit = zeros(nspp, nspp); %initial area proportion for reserve -2 and fmpa - 3
