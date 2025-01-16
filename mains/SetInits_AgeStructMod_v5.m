@@ -69,10 +69,12 @@ figure("Name", "Catch vs Biomass")
 for ispp = 1:nspp
     subplot(1, nspp, ispp)
 	plot(biovals(:,ispp), catchvals(:,ispp), 'k'); xlabel ('biomass'); ylabel ('catch')
+    title(fish{ispp})
     xlim([min(biovals(:,ispp)) max(biovals(:,ispp))])
     ylim([round(min(catchvals(:,ispp))) ceil(max(catchvals(:,ispp)))])
 	yline(0,'k')
 end
+saveas(gcf, '../figures/Catch vs Biomass.png')
 %% Find optimum effort to generate max catch using fminsearch and fmincon
 %%%% Run models to find Fmsy
 %%% Find optimal effort
@@ -97,6 +99,7 @@ for ispp = 1:nspp
 	xline(Eopt(ispp),'k')
     yline(Copt(ispp),'k')
 	yline(0,'k')
+    title(fish{ispp})
 end
 
 %%%% Effort plot for paper
@@ -106,6 +109,7 @@ fish = {'Parrotfish','Snapper', 'Coral trout', 'Rabbit fish'};
 
 maxcatch = max(catchvals);
 
+figure('Name', 'Optimal effort for max catch')
 subplot(1,2,1)
 plot(uvals,100*catchvals(:,1)/maxcatch(1), lstyle{1,1}, 'Color', lcolor(1,:),'LineWidth',1, 'MarkerFaceColor','k', 'MarkerSize',4, 'DisplayName',fish{1,1});
 xlabel('Fishing mortalty rate (/yr)'); ylabel('Equilibrium catch (% of max)');
@@ -126,7 +130,8 @@ hold on
 for ispp = 2:nspp
     plot(uvals,100*biovals(:,ispp)/maxbio(ispp), lstyle{1,ispp}, 'Color', lcolor(ispp,:),'LineWidth',1,'MarkerFaceColor','k', 'MarkerSize',4, 'DisplayName',fish{1,ispp});
 end
-legend('Parrotfish','Snapper','Coral trout', 'Rabbit fish');    
+legend('Parrotfish','Snapper','Coral trout', 'Rabbitfish');
+saveas(gcf, '../figures/Optimal effort for max catch.png')
 %% Plot N1, Biomass, and Catch over time for two scenarios
 % Scenario 0, FP = 1 = Fmsy, no MPA, no reserve
 % Scenario 1, FP = 1 = Fmsy, reserve = 30%, FMPA = 20%
