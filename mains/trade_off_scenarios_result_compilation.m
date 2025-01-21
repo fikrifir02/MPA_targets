@@ -1,24 +1,23 @@
 clc
 clear
 
-cd ('C:\Users\uqffirma\MATLAB Drive\MPA_target_equivalence\output_MPA_combination_bio')
-
+cd ('D:\github\MPA_targets\mains') %change directory to output folder
 
 trade_off_results = struct();
 trade_off_results.long = [];
 trade_off_results.short = [];
 
-trade_PPA00 = load('C:\Users\uqffirma\MATLAB Drive\MPA_target_equivalence\output_MPA_combination\trade_off_result_PPA00.mat');
-trade_PPA01 = load('C:\Users\uqffirma\MATLAB Drive\MPA_target_equivalence\output_MPA_combination\trade_off_result_PPA01.mat');
-trade_PPA02 = load('C:\Users\uqffirma\MATLAB Drive\MPA_target_equivalence\output_MPA_combination\trade_off_result_PPA02.mat');
-trade_PPA03 = load('C:\Users\uqffirma\MATLAB Drive\MPA_target_equivalence\output_MPA_combination\trade_off_result_PPA03.mat');
-trade_PPA04 = load('C:\Users\uqffirma\MATLAB Drive\MPA_target_equivalence\output_MPA_combination\trade_off_result_PPA04.mat');
-trade_PPA05 = load('C:\Users\uqffirma\MATLAB Drive\MPA_target_equivalence\output_MPA_combination\trade_off_result_PPA05.mat');
-trade_PPA06 = load('C:\Users\uqffirma\MATLAB Drive\MPA_target_equivalence\output_MPA_combination\trade_off_result_PPA06.mat');
-trade_PPA07 = load('C:\Users\uqffirma\MATLAB Drive\MPA_target_equivalence\output_MPA_combination\trade_off_result_PPA07.mat');
-trade_PPA08 = load('C:\Users\uqffirma\MATLAB Drive\MPA_target_equivalence\output_MPA_combination\trade_off_result_PPA08.mat');
-trade_PPA09 = load('C:\Users\uqffirma\MATLAB Drive\MPA_target_equivalence\output_MPA_combination\trade_off_result_PPA09.mat');
-trade_PPA_equals = load('C:\Users\uqffirma\MATLAB Drive\MPA_target_equivalence\output_MPA_combination\trade_off_result_PPA_equal.mat');
+trade_PPA00 = load('..\output\trade_off_result_PPA00.mat');
+trade_PPA01 = load('..\output\trade_off_result_PPA01.mat');
+trade_PPA02 = load('..\output\trade_off_result_PPA02.mat');
+trade_PPA03 = load('..\output\trade_off_result_PPA03.mat');
+trade_PPA04 = load('..\output\trade_off_result_PPA04.mat');
+trade_PPA05 = load('..\output\trade_off_result_PPA05.mat');
+trade_PPA06 = load('..\output\trade_off_result_PPA06.mat');
+trade_PPA07 = load('..\output\trade_off_result_PPA07.mat');
+trade_PPA08 = load('..\output\trade_off_result_PPA08.mat');
+trade_PPA09 = load('..\output\trade_off_result_PPA09.mat');
+trade_PPA_equals = load('..\output\trade_off_result_PPA_equal.mat');
 
 Avals = trade_PPA00.Avals; %First column is reserve proportion and second column is fishery MPA proportion
 Avals = [(1-Avals(:,1)-Avals(:,2)) Avals]; %insert NMPA proportion before => 1st NMPA; 2nd Reserve; 3rd FMPA
@@ -120,8 +119,8 @@ trade_off_results.short = {[Avals trade_PPA00.Biodiff(1).short] ...
                           [Avals trade_PPA09.Biodiff(4).short] ...
                           [Avals trade_PPA_equals.Biodiff(4).short]};  
                       
- flenm = char('trade_off_scenarios_results');  %set file name to save trade off scenarios results
+ flenm = char('..\output\trade_off_scenarios_results');  %set file name to save trade off scenarios results
  save( flenm, 'trade_off_results') %save the object
  
- flenm_1 = char('Avals');  %set file name to save parameters generated on this code
+ flenm_1 = char('..\output\Avals');  %set file name to save parameters generated on this code
   save( flenm_1, 'Avals') %save the object
