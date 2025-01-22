@@ -7,9 +7,8 @@
 clc
 clear
 
-cd ('/media/fikri02/Data/MPA_targets') % configure this when running Matlab in different devices or HPC
-cd ('./mains') % set to mains directory
-addpath(genpath('../functions')) % add path to functions
+cd ('D:\github\MPA_targets\mains') % configure this when running Matlab in different devices or HPC
+addpath(genpath('..\functions')) % add path to functions
 %% run and generate initial parameters
 run ('spparams_v3.m')  %run and generate initial parameters
 flenm = char('Params_v3');  %set file name to save parameters generated on this code

@@ -7,28 +7,27 @@
 clc
 clear 
 
-cd ('/media/fikri02/ffirma/OneDrive/matlab_drive') %set directory to mount exHD 
-cd ('./MPA_target_equivalence') % set MPA_target_equivalence directory
+cd ('D:\github\MPA_targets\mains') %change directory to output folder
 
-run ('SetInits_AgeStructMod_v5_Fmsy_090321.m') %Setup initial parameters
+run ('SetInits_AgeStructMod_v5.m') %Setup initial parameters
 
-flenm = char(['trade_off_result_PPA10'; % output file named based on fishing effort reduction
-        'trade_off_result_PPA09';
-        'trade_off_result_PPA08';
-        'trade_off_result_PPA07';
-        'trade_off_result_PPA06';
-        'trade_off_result_PPA05';
-        'trade_off_result_PPA04';
-        'trade_off_result_PPA03';
-        'trade_off_result_PPA02';
-        'trade_off_result_PPA01';
-        'trade_off_result_PPA00']);
+flenm = char(['..\output\trade_off_result_PPA00 '; % zero percent fishing reduction; FMPA remains to have the same FP as before MPA established; 2 or 3 digit number output file named based on reduction of fishing pressure in the FMPA
+        '..\output\trade_off_result_PPA10 '; % 10% reduction of fishing pressure in the FMPA
+        '..\output\trade_off_result_PPA20 '; % 20% reduction of fishing pressure in the FMPA
+        '..\output\trade_off_result_PPA30 '; % 30% reduction of fishing pressure in the FMPA
+        '..\output\trade_off_result_PPA40 '; % 40% reduction of fishing pressure in the FMPA
+        '..\output\trade_off_result_PPA50 '; % 50% reduction of fishing pressure in the FMPA
+        '..\output\trade_off_result_PPA60 '; % 60% reduction of fishing pressure in the FMPA
+        '..\output\trade_off_result_PPA70 '; % 70% reduction of fishing pressure in the FMPA
+        '..\output\trade_off_result_PPA80 '; % 80% reduction of fishing pressure in the FMPA
+        '..\output\trade_off_result_PPA90 '; % 90% reduction of fishing pressure in the FMPA
+        '..\output\trade_off_result_PPA100']); % 100% reduction of fishing pressure in the FMPA; FMPA is similar to reserve - zero fishing pressure
     
    
- Frem = 1.0:-0.1:0.0; % Fishing effort reduction
+ Frem = 1.0:-0.1:0.0; % Fishing presure remain, reduction (in proportion) = 1 - Frem
     
   
-for k = 1: length(Frem)
+ parfor k = 1: length(Frem)
 
 %%% Initialisation
 startmpa_base = 50; %MPA is established at this year
@@ -39,7 +38,7 @@ Ainit = zeros(3, output.nspp); % all elements are zero, elements of nmpa, reserv
 
 
 %Avals = linspace(Amin, Amax, nAvals); 
-Avals = comb(1)/100; % 5 is set to match with catch benefit plot
+Avals = comb(1)/100; % is set to match with catch benefit plot
 Avals = Avals(:,[1 2]);%Two columns are selected (reserve and fmpa)
 nAvals = length(Avals); %number of reserve & fmpa combinations
 
@@ -85,13 +84,13 @@ for iu = 1:nuvals %simulate three different fishing pressures (FP)
     umat{ispp} = createumat(ispp, output.spparams.afishind,Btot);
     end
     
-	xres_SQ1 = timeloopfunc(SQ1_null, umat, output.nspp, output.Ninit,output.spparams, Ainit, tmax, startmpa,...
+    xres_SQ1 = timeloopfunc(SQ1_null, umat, output.nspp, output.Ninit,output.spparams, Ainit, tmax, startmpa,...
      output.nmonths, output.dT, Frem(k)); % Simulate status quo condition over time
  
-	Ninit = xres_SQ1.N1;
-	tmax = 100;
+    Ninit = xres_SQ1.N1;
+    tmax = 100;
     
-	xres_SQ = timeloopfunc(SQ_null, umat, output.nspp, Ninit,output.spparams, Ainit, tmax, startmpa,...
+    xres_SQ = timeloopfunc(SQ_null, umat, output.nspp, Ninit,output.spparams, Ainit, tmax, startmpa,...
     output.nmonths, output.dT, Frem(k)); % continue - Simulate status quo condition over time
 
         for j = 1: output.nspp %updating Catch_SQ and Bio_SQ struct objects, catch and biomass under status quo conditions generated
@@ -122,5 +121,26 @@ for iu = 1:nuvals %simulate three different fishing pressures (FP)
         end
     end
 end
-save (flenm(k,:))
- end
+
+% Gather variables to save
+vars = struct();
+vars.Catch_SQ = Catch_SQ;
+vars.Catch_main = Catch_main;
+vars.Bio_SQ = Bio_SQ;
+vars.Bio_main = Bio_main;
+vars.Catchdiff = Catchdiff;
+vars.Biodiff = Biodiff;
+vars.species_id = species_id;
+vars.SQ1_null = SQ1_null;
+vars.SQ_null = SQ_null;
+vars.umat = umat;
+vars.Ninit = Ninit;
+vars.tmax = tmax;
+vars.startmpa = startmpa;
+vars.Ainit = Ainit;
+vars.Avals = Avals;
+vars.nuvals = nuvals;
+vars.FPmult = FPmult;
+
+parsave(flenm(k,:), vars);
+end
