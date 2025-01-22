@@ -30,8 +30,9 @@ E<sub>Opt</sub> (F<sub.msy</sub>) for maximum catch for each species:
 3) Coral trout (*Plectropomus* spp.): 0.2064
 4) Rabbitfish (*Siganus* spp.): 0.3995
 
+### C. Run the main script [`tradeoff_simulations`](mains/tradeoff_simulations.m) to simulate fish biomass and catch over time under different MPA scenarios (combinations of NMPA, reserve, and FMPA) and fishing pressure reductions.
+The simulation output in the [output folder](output/) is split into 11 .mat files with a two-digit code indicating the remaining fishing pressure rate after the reduction is implemented. For example, *05 indicates 50% of the previous FP remained after the reduction, *00 indicates that FMPA is similar to the reserve where FP becomes zero after the reduction is implemented. In contrast, PPA_equal indicates that when MPA is implemented, FMPA is similar to NMPA, with no difference in FP between the two zones. The fishing pressure displaced from the reserve is evenly distributed in NMPA and FMPA. Meanwhile, *10 indicates that FP in FMPA remains the same as before MPA, assuming that the displaced FP from the reserve moves to NMPA, not to FMPA.
 
-### C. Run the main script [`tradeoff_simulations`](mains/tradeoff_simulations.m) to simulate fish biomass and catch overtime under different MPA scenarios (combinations of NMPA, reserve, and FMPA) and fishing pressure reductions)
+The output files are compiled by running the script [`trade_off_scenarios_result_compilation`](mains/trade_off_scenarios_result_compilation.m). It creates a single struct output file named [`trade_off_scenarios_results.mat`](mains/trade_off_scenarios_results.mat).
 
-
- 
+### Plots 
