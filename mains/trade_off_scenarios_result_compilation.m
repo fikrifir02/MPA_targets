@@ -1,46 +1,60 @@
 clc
 clear
 
-cd ('D:\github\MPA_targets\mains') %change directory to output folder
+cd ('/media/fikri02/Data/MPA_targets/mains') %change directory to output folder
 
-trade_off_results = struct();
-trade_off_results.long = [];
-trade_off_results.short = [];
-
-trade_PPA_equal = load('..\output\trade_off_result_PPA_equal.mat'); % zero percent fishing reduction; FMPA remains to have the same FP as before MPA established; 2 or 3 digit number output file named based on reduction of fishing pressure in the FMPA
-trade_PPA10 = load('..\output\trade_off_result_PPA10.mat'); % 10% reduction of fishing pressure in the FMPA
-trade_PPA20 = load('..\output\trade_off_result_PPA20.mat'); % 20% reduction of fishing pressure in the FMPA
-trade_PPA30 = load('..\output\trade_off_result_PPA30.mat'); % 30% reduction of fishing pressure in the FMPA
-trade_PPA40 = load('..\output\trade_off_result_PPA40.mat'); % 40% reduction of fishing pressure in the FMPA
-trade_PPA50 = load('..\output\trade_off_result_PPA50.mat'); % 50% reduction of fishing pressure in the FMPA
-trade_PPA60 = load('..\output\trade_off_result_PPA60.mat'); % 60% reduction of fishing pressure in the FMPA
-trade_PPA70 = load('..\output\trade_off_result_PPA70.mat'); % 70% reduction of fishing pressure in the FMPA
-trade_PPA80 = load('..\output\trade_off_result_PPA80.mat'); % 80% reduction of fishing pressure in the FMPA
-trade_PPA90 = load('..\output\trade_off_result_PPA90.mat'); % 90% reduction of fishing pressure in the FMPA
-trade_PPA100 = load('..\output\trade_off_result_PPA100.mat'); % 100% reduction of fishing pressure in the FMPA; FMPA is similar to reserve - zero fishing pressure
+trade_PPA_equal = load('../output/trade_off_result_PPA_equal.mat'); % zero percent fishing reduction; FMPA remains to have the same FP as before MPA established; 2 or 3 digit number output file named based on reduction of fishing pressure in the FMPA
+trade_PPA10 = load('../output/trade_off_result_PPA10 .mat'); % 10% reduction of fishing pressure in the FMPA
+trade_PPA20 = load('../output/trade_off_result_PPA20 .mat'); % 20% reduction of fishing pressure in the FMPA
+trade_PPA30 = load('../output/trade_off_result_PPA30 .mat'); % 30% reduction of fishing pressure in the FMPA
+trade_PPA40 = load('../output/trade_off_result_PPA40 .mat'); % 40% reduction of fishing pressure in the FMPA
+trade_PPA50 = load('../output/trade_off_result_PPA50 .mat'); % 50% reduction of fishing pressure in the FMPA
+trade_PPA60 = load('../output/trade_off_result_PPA60 .mat'); % 60% reduction of fishing pressure in the FMPA
+trade_PPA70 = load('../output/trade_off_result_PPA70 .mat'); % 70% reduction of fishing pressure in the FMPA
+trade_PPA80 = load('../output/trade_off_result_PPA80 .mat'); % 80% reduction of fishing pressure in the FMPA
+trade_PPA90 = load('../output/trade_off_result_PPA90 .mat'); % 90% reduction of fishing pressure in the FMPA
+trade_PPA100 = load('../output/trade_off_result_PPA100.mat'); % 100% reduction of fishing pressure in the FMPA; FMPA is similar to reserve - zero fishing pressure
 
 Avals = trade_PPA100.Avals; %First column is reserve proportion and second column is fishery MPA proportion
 Avals = [(1-Avals(:,1)-Avals(:,2)) Avals]; %insert NMPA proportion before => 1st NMPA; 2nd Reserve; 3rd FMPA
 
+% Initialize trade_off_results structure
+trade_off_results = struct();
+trade_off_results.bio_long = [];
+trade_off_results.bio_short = [];
+trade_off_results.catch_long = [];
+trade_off_results.catch_short = [];
 
 ppa_scenarios = { trade_PPA_equal, trade_PPA10, trade_PPA20, trade_PPA30, trade_PPA40, trade_PPA50, trade_PPA60, trade_PPA70, trade_PPA80, trade_PPA90, trade_PPA100};
 
 for i = 1:length(ppa_scenarios)
-    trade_off_results.long = [trade_off_results.long; ...
+    trade_off_results.bio_long = [trade_off_results.bio_long; ...
                               [Avals ppa_scenarios{i}.Biodiff(1).long]; ...
                               [Avals ppa_scenarios{i}.Biodiff(2).long]; ...
                               [Avals ppa_scenarios{i}.Biodiff(3).long]; ...
                               [Avals ppa_scenarios{i}.Biodiff(4).long]];
                           
-    trade_off_results.short = [trade_off_results.short; ...
+    trade_off_results.bio_short = [trade_off_results.bio_short; ...
                                [Avals ppa_scenarios{i}.Biodiff(1).short]; ...
                                [Avals ppa_scenarios{i}.Biodiff(2).short]; ...
                                [Avals ppa_scenarios{i}.Biodiff(3).short]; ...
                                [Avals ppa_scenarios{i}.Biodiff(4).short]];
+                           
+    trade_off_results.catch_long = [trade_off_results.catch_long; ...
+                                    [Avals ppa_scenarios{i}.Catchdiff(1).long]; ...
+                                    [Avals ppa_scenarios{i}.Catchdiff(2).long]; ...
+                                    [Avals ppa_scenarios{i}.Catchdiff(3).long]; ...
+                                    [Avals ppa_scenarios{i}.Catchdiff(4).long]];
+                                
+    trade_off_results.catch_short = [trade_off_results.catch_short; ...
+                                     [Avals ppa_scenarios{i}.Catchdiff(1).short]; ...
+                                     [Avals ppa_scenarios{i}.Catchdiff(2).short]; ...
+                                     [Avals ppa_scenarios{i}.Catchdiff(3).short]; ...
+                                     [Avals ppa_scenarios{i}.Catchdiff(4).short]];
 end
                       
- flenm = char('..\output\trade_off_scenarios_results');  %set file name to save trade off scenarios results
- save( flenm, 'trade_off_results') %save the object
+flenm = char('../output/trade_off_scenarios_results');  %set file name to save trade off scenarios results
+save(flenm, 'trade_off_results') %save the object
  
- flenm_1 = char('..\output\Avals');  %set file name to save parameters generated on this code
-  save( flenm_1, 'Avals') %save the object
+flenm_1 = char('../output/Avals');  %set file name to save parameters generated on this code
+save(flenm_1, 'Avals') %save the object
