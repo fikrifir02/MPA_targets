@@ -2,9 +2,9 @@
 clc
 clear
 
-cd ('D:\github\MPA_targets\mains') %change directory to output folder
+cd ('/media/fikri02/Data/MPA_targets/mains') %change directory to output folder
 
-load('..\output\trade_off_scenarios_results.mat')
+load('../output/trade_off_scenarios_results.mat')
 % X1, Y1: X1 is the MPA's reserve proportion for parrotfish, Y1 is the long-term catch benefit for parrotfish
 % X2, Y2: X2 is the MPA's reserve proportion for snapper, Y2 is the long-term catch benefit for snapper
 % X3, Y3: X3 is the MPA's reserve proportion for coral trout, Y3 is the long-term catch benefit for coral trout
@@ -12,250 +12,53 @@ load('..\output\trade_off_scenarios_results.mat')
 X1 = [];X2 = [];X3 = [];X4 = [];
 Y1 = [];Y2 = [];Y3 = [];Y4 = [];
 
-for i = 1: length(trade_off_results.long{1,6})
-    % 0 means no FMPA 
-if trade_off_results.long{1,6}(i,3) == 0 && (trade_off_results.long{1,6}(i,1)+ trade_off_results.long{1,6}(i,2)) == 1
-    X1 = [X1 trade_off_results.long{1,6}(i,2)];
-    Y1 = [Y1 trade_off_results.long{1,6}(i,6)];
+for i = 1: length(trade_off_results.catch_long{1,6})
+    % 0 means no FMPA ; only reserve
+if trade_off_results.catch_long{1,6}(i,3) == 0 && (trade_off_results.catch_long{1,6}(i,1)+ trade_off_results.catch_long{1,6}(i,2)) == 1
+    X1 = [X1 trade_off_results.catch_long{1,6}(i,2)];
+    Y1 = [Y1 trade_off_results.catch_long{1,6}(i,6)];
     
-    X2 = [X2 trade_off_results.long{2,6}(i,2)];
-    Y2 = [Y2 trade_off_results.long{2,6}(i,6)];
+    X2 = [X2 trade_off_results.catch_long{2,6}(i,2)];
+    Y2 = [Y2 trade_off_results.catch_long{2,6}(i,6)];
     
-    X3 = [X3 trade_off_results.long{3,6}(i,2)];
-    Y3 = [Y3 trade_off_results.long{3,6}(i,6)];
+    X3 = [X3 trade_off_results.catch_long{3,6}(i,2)];
+    Y3 = [Y3 trade_off_results.catch_long{3,6}(i,6)];
     
-    X4 = [X4 trade_off_results.long{4,6}(i,2)];
-    Y4 = [Y4 trade_off_results.long{4,6}(i,6)];
+    X4 = [X4 trade_off_results.catch_long{4,6}(i,2)];
+    Y4 = [Y4 trade_off_results.catch_long{4,6}(i,6)];
 else
 end
 end
     
-% minY = min([Y1 Y2 Y3 Y4]);
-% maxY = max([Y1 Y2 Y3 Y4]);
-% Y5 = [minY maxY]; X5 = [0.3 0.3];
-
-%% uncomment this if all species need to be plotted
-
-% figure('Name','long-term catch benefit of marine reserves')
-% plot(X1,Y1,'k-',...
-%     X2,Y2,'r--',...
-%     X3,Y3,'g-.',...
-%     X4,Y4,'b:',...
-%     'LineWidth',2)
-% ylim([0,0.5]);xlim([0,0.7]);
-% legend('parrotfish','snapper','grouper','rabbitfish')
-% xlabel('Marine reserve coverage(%)')
-% ylabel('Long-term catch(%); %diff. from status-quo catcdiff')
-%% Plot catch differences only snapper
+%% Plot marine reserve benefits measured by catch differences between MPA and status quo
 figure('Name','long-term catch benefit of marine reserves')
-a1 = plot(X2,Y2,'k-','LineWidth',2);
+a1 = plot(X2,Y2,'k-','LineWidth',2); % reserve benefit for snapper
 hold on
-b1 = scatter(0.3,Y2(31),100,'b','filled');
-b2 = plot([0.3 0.3],[min(Y2) Y2(31)],'b--');
-b3 = plot([0 0.3],[Y2(31) Y2(31)],'b--');
-c1 = scatter(0.1,Y2(11),100,'r','filled');
-c2 = plot([0.1 0.1],[min(Y2) Y2(11)],'r--');
-c3 = plot([0 0.1],[Y2(11) Y2(11)],'r--');
+b1 = scatter(0.3,Y2(131),100,'b','filled');
+b2 = plot([0.3 0.3],[0 Y2(131)],'b--'); % Connect to x-axis
+b3 = plot([0 0.3],[Y2(131) Y2(131)],'b--'); % Connect to y-axis
+text(0.3, Y2(131), sprintf('%.2f%%', Y2(131) * 100), 'VerticalAlignment', 'bottom', 'HorizontalAlignment', 'right', 'Color', 'k');
+
+c1 = scatter(0.1,Y2(111),100,'r','filled');
+c2 = plot([0.1 0.1],[0 Y2(111)],'r--'); % Connect to x-axis
+c3 = plot([0 0.1],[Y2(111) Y2(111)],'r--'); % Connect to y-axis
+text(0.1, Y2(111), sprintf('%.2f%%', Y2(111) * 100), 'VerticalAlignment', 'bottom', 'HorizontalAlignment', 'right', 'Color', 'k');
 
 i_max = find(Y2 == max(Y2));
-% d1 = scatter(X2(i_max),Y2(i_max),100,'k','filled');
-% d2 = plot([X2(i_max) X2(i_max)],[0 Y2(i_max)],'k--');
-% d3 = plot([0 X2(i_max)],[Y2(i_max) Y2(i_max)],'k--');
+d1 = scatter(X2(i_max),Y2(i_max),100,'k','filled');
+d2 = plot([X2(i_max) X2(i_max)],[0 Y2(i_max)],'k--'); % Connect to x-axis
+d3 = plot([0 X2(i_max)],[Y2(i_max) Y2(i_max)],'k--'); % Connect to y-axis
+text(X2(i_max), Y2(i_max), sprintf('%.2f%%', Y2(i_max) * 100), 'VerticalAlignment', 'bottom', 'HorizontalAlignment', 'right', 'Color', 'k');
+
 ylim([0,0.5]); xlim([0,0.7]);
 legend([c1 b1],'Aichi Target 11','Target 3 of the GBF')
-xlabel('Proportion of MPA coverage (%) in the seascape that is fully allocated as reserve')
+xlabel({'Proportion of MPA coverage (%)', 'in the seascape that is fully allocated as reserve'})
 xticks(0:0.1:1)
 xticklabels({'0', '10','20','30','40','50','60','70','80','90','100'})
-ylabel('Differences of estimated fisheries benefits based on MPA scenarios compared to the status quo (%)')
+ylabel({'Differences of estimated fisheries benefits', 'based on MPA scenarios compared to the status quo (%)'})
 yticks(0:0.1:1)
 yticklabels({'0', '10','20','30','40','50','60','70','80','90','100'})
-%% Create bar plot version of the figure above
 
-%%
-%find long-term catch that is generated by 30% marine reserve size
- A = round(Y1(X1==0.3),2) %long_catch_parrotfish
- B = round(Y2(X2==0.3),2) %long_catch_snapper
- C = round(Y3(X3==0.3),2) %long_catch_grouper
- D = round(Y4(X4==0.3),2) %long_catch_rabbitfish
+% Save the figure as a jpg file in the figures folder
+saveas(gcf, '../figures/long_term_catch_benefit_snapper.jpg')
 
-%%Find equivalence MPA design for long-term catch above
-a = []; b = []; c = []; d = [];% a,b,c,d consiss of 4 columns
-%1st NMPA coverage, 2nd reserve coverage, 3rd FMPA coverage, 4th fishing
-%effort reduction
-for i = 1: size(trade_off_results.long,2)
-  for j = 1: size(trade_off_results.long{2,1},1)
-            if round(trade_off_results.long{1,i}(j,6),2) == A && trade_off_results.long{1,i}(j,2) <0.3
-                a = [a; trade_off_results.long{1,i}(j,1:3) 1-((i-1)/10)];
-            else
-            end
-  end
-end
-
-for i = 1: size(trade_off_results.long,2)
-  for j = 1: size(trade_off_results.long{2,1},1)
-            if round(trade_off_results.long{2,i}(j,6),2) == B && trade_off_results.long{2,i}(j,2) <0.3
-                b = [b; trade_off_results.long{2,i}(j,1:3) 1-((i-1)/10)];
-            else
-            end
-  end
-end
-
-for i = 1: size(trade_off_results.long,2)
-  for j = 1: size(trade_off_results.long{2,1},1)
-            if round(trade_off_results.long{3,i}(j,6),2) == C && trade_off_results.long{3,i}(j,2) <0.3
-                c = [c; trade_off_results.long{3,i}(j,1:3) 1-((i-1)/10)];
-            else
-            end
-  end
-end
-
-for i = 1: size(trade_off_results.long,2)
-  for j = 1: size(trade_off_results.long{2,1},1)
-            if round(trade_off_results.long{4,i}(j,6),2) == D && trade_off_results.long{4,i}(j,2) <0.3
-                d = [d; trade_off_results.long{4,i}(j,1:3) 1-((i-1)/10)];
-            else
-            end
-  end
-end
-
-%% Parrotfish plot
-%uncomment this if required
-% a_50 = []; a_30 = []; a_10 = [];
-% 
-% for i = 1: size(a,1)
-%     if round(a(i,4),2) == 0.50
-%         a_50 = [a_50 ;a(i,:)];
-%     elseif round(a(i,4),2) == 0.30
-%         a_30 = [a_30 ;a(i,:)];
-%     elseif round(a(i,4),2) == 0.10
-%         a_10 = [a_10 ;a(i,:)];
-%     else
-%     end
-% end
-% 
-% 
-% a_50(:,5) = (a_50(:,2)+ a_50(:,3))./(a_50(:,1)+ a_50(:,2)+ a_50(:,3));% MPA proportion over the seascape
-% a_50(:,6) =  a_50(:,3)./(a_50(:,1)+ a_50(:,2)+ a_50(:,3));% FMPA proportion over the seascape
-% a_50(:,7) =  a_50(:,3)./(a_50(:,2)+ a_50(:,3));% FMPA proportion over the MPA
-% 
-% a_30(:,5) = (a_30(:,2)+ a_30(:,3))./(a_30(:,1)+ a_30(:,2)+ a_30(:,3));% MPA proportion over the seascape
-% a_30(:,6) =  a_30(:,3)./(a_30(:,1)+ a_30(:,2)+ a_30(:,3));% FMPA proportion over the seascape
-% a_30(:,7) =  a_30(:,3)./(a_30(:,2)+ a_30(:,3));% FMPA proportion over the MPA
-% 
-% a_10(:,5) = (a_10(:,2)+ a_10(:,3))./(a_10(:,1)+ a_10(:,2)+ a_10(:,3));% MPA proportion over the seascape
-% a_10(:,6) =  a_10(:,3)./(a_10(:,1)+ a_10(:,2)+ a_10(:,3));% FMPA proportion over the seascape
-% a_10(:,7) =  a_10(:,3)./(a_10(:,2)+ a_10(:,3));% FMPA proportion over the MPA
-% 
-% figure('Name','reserve vs FMPA - parrotfish')
-% scatter(a_50(:,3),a_50(:,2),'MarkerEdgeColor','none',...
-%               'MarkerFaceColor','r',...
-%               'LineWidth',1.5)
-% hold on
-% scatter(a_30(:,3),a_30(:,2),'MarkerEdgeColor','none',...
-%               'MarkerFaceColor','g',...
-%               'LineWidth',1.5)
-% scatter(a_10(:,3),a_10(:,2),'MarkerEdgeColor','none',...
-%               'MarkerFaceColor','b',...
-%               'LineWidth',1.5)
-% xlabel('FMPA coverage (%)')
-% ylabel('Reserve coverage(%)')
-% legend1 = legend(gca,'show',{'50','30','10'});
-% set(legend1,'Location','northwest');
-% title(legend1,'Effort reductions (%)');
-
-%% Snapper plot
-b_50 = []; b_30 = []; b_10 = [];
-
-for i = 1: size(b,1)
-    if round(b(i,4),2) == 0.50
-        b_50 = [b_50 ;b(i,:)];
-    elseif round(b(i,4),2) == 0.30
-        b_30 = [b_30 ;b(i,:)];
-    elseif round(b(i,4),2) == 0.10
-        b_10 = [b_10 ;b(i,:)];
-    else
-    end
-end
-
-b_50(:,5) = (b_50(:,2)+ b_50(:,3))./(b_50(:,1)+ b_50(:,2)+ b_50(:,3));% MPA proportion over the seascape
-b_50(:,6) =  b_50(:,3)./(b_50(:,1)+ b_50(:,2)+ b_50(:,3));% FMPA proportion over the seascape
-b_50(:,7) =  b_50(:,3)./(b_50(:,2)+ b_50(:,3));% FMPA proportion over the MPA
-
-b_30(:,5) = (b_30(:,2)+ b_30(:,3))./(b_30(:,1)+ b_30(:,2)+ b_30(:,3));% MPA proportion over the seascape
-b_30(:,6) =  b_30(:,3)./(b_30(:,1)+ b_30(:,2)+ b_30(:,3));% FMPA proportion over the seascape
-b_30(:,7) =  b_30(:,3)./(b_30(:,2)+ b_30(:,3));% FMPA proportion over the MPA
-
-b_10(:,5) = (b_10(:,2)+ b_10(:,3))./(b_10(:,1)+ b_10(:,2)+ b_10(:,3));% MPA proportion over the seascape
-b_10(:,6) =  b_10(:,3)./(b_10(:,1)+ b_10(:,2)+ b_10(:,3));% FMPA proportion over the seascape
-b_10(:,7) =  b_10(:,3)./(b_10(:,2)+ b_10(:,3));% FMPA proportion over the MPA
-
-figure('Name','reserve vs FMPA - snapper')
-scatter(b_50(:,3),b_50(:,2),'MarkerEdgeColor','none',...
-              'MarkerFaceColor','r',...
-              'LineWidth',1.5)
-hold on
-scatter(b_30(:,3),b_30(:,2),'MarkerEdgeColor','none',...
-              'MarkerFaceColor','g',...
-              'LineWidth',1.5)
-scatter(b_10(:,3),b_10(:,2),'MarkerEdgeColor','none',...
-              'MarkerFaceColor','b',...
-              'LineWidth',1.5)
-xlabel('FMPA coverage (%)')
-ylabel('Reserve coverage(%)')
-
-xticks(0:0.1:1)
-xticklabels({'0', '10','20','30','40','50','60','70','80','90','100'})
-yticks(0:0.1:1)
-yticklabels({'0', '10','20','30','40','50','60','70','80','90','100'})
-legend1 = legend(gca,'show',{'50','30','10'});
-set(legend1,'Location','northeast');
-title(legend1,'Effort reductions (%)');
-
-
-%% Grouper plot
-%uncomment this if required
-% c_50 = []; c_30 = []; c_10 = [];
-% 
-% for i = 1: size(c,1)
-%     if round(c(i,4),2) == 0.50
-%         c_50 = [c_50 ;c(i,:)];
-%     elseif round(c(i,4),2) == 0.30
-%         c_30 = [c_30 ;c(i,:)];
-%     elseif round(c(i,4),2) == 0.10
-%         c_10 = [c_10 ;c(i,:)];
-%     else
-%     end
-% end
-% 
-% c_50(:,5) = (c_50(:,2)+ c_50(:,3))./(c_50(:,1)+ c_50(:,2)+ c_50(:,3));% MPA proportion over the seascape
-% c_50(:,6) =  c_50(:,3)./(c_50(:,1)+ c_50(:,2)+ c_50(:,3));% FMPA proportion over the seascape
-% c_50(:,7) =  c_50(:,3)./(c_50(:,2)+ c_50(:,3));% FMPA proportion over the MPA
-% 
-% c_30(:,5) = (c_30(:,2)+ c_30(:,3))./(c_30(:,1)+ c_30(:,2)+ c_30(:,3));% MPA proportion over the seascape
-% c_30(:,6) =  c_30(:,3)./(c_30(:,1)+ c_30(:,2)+ c_30(:,3));% FMPA proportion over the seascape
-% c_30(:,7) =  c_30(:,3)./(c_30(:,2)+ c_30(:,3));% FMPA proportion over the MPA
-% 
-% c_10(:,5) = (c_10(:,2)+ c_10(:,3))./(c_10(:,1)+ c_10(:,2)+ c_10(:,3));% MPA proportion over the seascape
-% c_10(:,6) =  c_10(:,3)./(c_10(:,1)+ c_10(:,2)+ c_10(:,3));% FMPA proportion over the seascape
-% c_10(:,7) =  c_10(:,3)./(c_10(:,2)+ c_10(:,3));% FMPA proportion over the MPA
-% 
-% figure('Name','reserve vs FMPA - grouper')
-% scatter(c_50(:,3),c_50(:,2),'MarkerEdgeColor','none',...
-%               'MarkerFaceColor','r',...
-%               'LineWidth',1.5)
-% hold on
-% scatter(c_30(:,3),c_30(:,2),'MarkerEdgeColor','none',...
-%               'MarkerFaceColor','g',...
-%               'LineWidth',1.5)
-% scatter(c_10(:,3),c_10(:,2),'MarkerEdgeColor','none',...
-%               'MarkerFaceColor','b',...
-%               'LineWidth',1.5)
-% xlabel('FMPA coverage (%)')
-% ylabel('Reserve coverage(%)')
-% legend1 = legend(gca,'show',{'50','30','10'});
-% set(legend1,'Location','northwest');
-% title(legend1,'Effort reductions (%)');
-
-
-clc
-clear

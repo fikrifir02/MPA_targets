@@ -36,3 +36,14 @@ The simulation output in the [output folder](output/) is split into 11 .mat file
 The output files are compiled by running the script [`trade_off_scenarios_result_compilation`](mains/trade_off_scenarios_result_compilation.m). It creates a single struct output file named [`trade_off_scenarios_results.mat`](mains/trade_off_scenarios_results.mat).
 
 ### Plots 
+
+run ['plot_reserve_catchdiff'](mains/plot_reserve_catchdiff.m) to plot the difference in catch between reserve and status quo over time.
+![long_term_catch_benefit_snapper.jpg](figures/long_term_catch_benefit_snapper.jpg)
+
+run ['plot_heatmap_fmpa_mpa'](mains/plot_heatmap_fmpa_mpa.m) to plot:
+1. heatmap of the difference in catch benefits for various MPA coverage and diverse FMPA proportions
+!['heatmap_snapper_0.1_Fred_overfished'](figures/heatmap_snapper_0.1_Fred_overfished.jpg)
+2. trade-off between reserve proportion and FMPA proportion
+!['tradeoff_snapper_0.1_Fred_overfished'](figures/trade_off_reserve_fmpa_10.jpg)
+3. Combination of FMPA and Reserve proportions that yield the same catch benefit as a full reserve of 10% or 30% in a seascape
+!['equivalence_0.1_reserve'](figures/equivalence_0.1_reserve.jpg) 
